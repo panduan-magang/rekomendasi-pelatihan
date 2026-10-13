@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigasi Karir Maganghub 2026 — Senior Analyst Career Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+          },
+          colors: {
+            paper: '#FDFBF7',
+            ink: {
+              900: '#191C1E',
+              800: '#2C3036',
+              600: '#5A626A',
+              400: '#8E969F',
+              200: '#E4E7EB',
+              100: '#F2F4F7'
+            },
+            terracotta: {
+              50: '#FDF6F2',
+              100: '#FAEAE3',
+              500: '#D95D39',
+              600: '#BF4824',
+              700: '#943314'
+            },
+            forest: {
+              50: '#F2F7F4',
+              100: '#E1EDE6',
+              600: '#2D6A4F',
+              700: '#1B4332'
+            },
+            amberwarm: {
+              50: '#FFFDF5',
+              500: '#D97706',
+              600: '#B45309'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F8F7F4;
+      color: #1E232A;
+      -webkit-font-smoothing: antialiased;
+    }
+    .badge-soft {
+      transition: all 0.2s ease;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #F1EFEA;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #D4CEBE;
+      border-radius: 9999px;
+    }
+    .editorial-border {
+      border-color: #E7E3D8;
+    }
+    .card-craft {
+      background: #FFFFFF;
+      border: 1px solid #ECE7DE;
+      box-shadow: 0 4px 18px rgba(35, 30, 20, 0.03);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+
+  <header class="sticky top-0 z-30 bg-[#F8F7F4]/90 backdrop-blur-md border-b editorial-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-terracotta-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          M
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-ink-900 tracking-tight">Katalog Maganghub</h1>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="https://shop.yec.co.id/product-category/pelatihan-maganghub-kemnaker/" target="_blank" class="hidden md:inline-flex items-center text-xs font-semibold text-terracotta-600 bg-terracotta-50 hover:bg-terracotta-100 px-3 py-2 rounded-lg transition border border-terracotta-100">
+          🚀 Daftar Pelatihan
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-6">
+
+    <!-- Hero Search Section -->
+    <section class="max-w-3xl mx-auto text-center space-y-6 mb-8 pt-4">
+      <h2 class="text-3xl sm:text-4xl font-serif font-bold text-ink-900 leading-tight">
+        Temukan Pelatihan & Posisi Magang Terbaikmu
+      </h2>
+      
+      <!-- Main Search -->
+      <div class="bg-white p-2 rounded-2xl shadow-lg border border-[#E7E3D8] flex items-center relative transition-all focus-within:ring-4 focus-within:ring-terracotta-500/20 focus-within:border-terracotta-500">
+        <svg class="w-6 h-6 text-terracotta-500 absolute left-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        <input 
+          type="text" 
+          id="search-input"
+          oninput="handleSearch()"
+          placeholder="Ketik jurusan (Cth: Psikologi, Teknik, Ilmu Komunikasi)..."
+          class="w-full text-base sm:text-lg bg-transparent border-none px-4 py-3 pl-12 focus:outline-none focus:ring-0 text-ink-900 placeholder-ink-400"
+        >
+      </div>
+
+      <!-- Quick Filters / Pills -->
+      <div class="flex flex-wrap justify-center gap-2 pt-2" id="cluster-pills">
+        <button onclick="filterByCluster('ALL')" class="cluster-btn active px-4 py-2 text-xs font-semibold rounded-full bg-ink-900 text-white transition shadow-sm border border-transparent">
+          Semua Jurusan
+        </button>
+        <button onclick="filterByCluster('STEM')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
+          🔬 Sains & Teknik
+        </button>
+        <button onclick="filterByCluster('KESEHATAN')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
+          🩺 Kesehatan & Agro
+        </button>
+        <button onclick="filterByCluster('HUMANIORA')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
+          📚 Pend. & Seni
+        </button>
+        <button onclick="filterByCluster('SOSIAL')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
+          🏛️ Sosial, Bisnis & Gov
+        </button>
+      </div>
+    </section>
+
+    <!-- Table Section -->
+    <section id="matrix-view" class="space-y-4">
+      <div id="filter-feedback" class="flex items-center justify-between text-xs text-ink-600 bg-white border editorial-border px-4 py-3 rounded-xl shadow-sm">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          <span>Menampilkan <strong id="visible-count" class="text-ink-900">41</strong> program studi</span>
+        </div>
+        <button onclick="resetFilters()" class="text-terracotta-600 hover:text-terracotta-700 font-semibold underline decoration-terracotta-200 underline-offset-4">Reset Pencarian</button>
+      </div>
+
+      <div id="table-container" class="card-craft rounded-2xl overflow-hidden bg-white mt-4">
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full min-w-[1050px] text-left border-collapse">
+            <thead class="bg-[#F8F7F4] border-b border-[#ECE7DE]">
+              <tr>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-12 text-center">No</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Jurusan</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[20%]">Posisi Potensial</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Pelatihan</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[20%]">Alasan</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%] text-center bg-terracotta-50/50">Link Pelatihan</th>
+              </tr>
+            </thead>
+            <tbody id="table-body" class="divide-y divide-[#ECE7DE]">
+              <tr>
+                <td colspan="6" class="py-12 text-center">
+                  <div class="inline-flex items-center justify-center gap-2 text-ink-600 font-medium animate-pulse">
+                    <svg class="w-5 h-5 animate-spin text-terracotta-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    Memuat data jurusan...
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="empty-state" class="hidden text-center py-20 card-craft rounded-2xl space-y-4 border-dashed border-2 border-ink-200">
+        <div class="w-16 h-16 mx-auto rounded-full bg-ink-50 flex items-center justify-center text-2xl">🤷‍♂️</div>
+        <div>
+          <h4 class="text-lg font-bold text-ink-900">Jurusan tidak ditemukan</h4>
+          <p class="text-sm text-ink-400 max-w-md mx-auto mt-1">Coba gunakan kata kunci yang lebih umum seperti "Teknik", "Sosial", atau periksa ejaan jurusanmu.</p>
+        </div>
+        <button onclick="resetFilters()" class="mt-4 text-sm bg-ink-900 text-white font-medium px-5 py-2.5 rounded-xl hover:bg-ink-800 transition shadow-md">Tampilkan Semua Jurusan</button>
+      </div>
+    </section>
+
+    <!-- Call to Action Footer -->
+    <section class="mt-12 card-craft rounded-2xl p-6 sm:p-10 bg-gradient-to-br from-terracotta-500 to-terracotta-700 text-center text-white shadow-lg relative overflow-hidden">
+      <div class="relative z-10 max-w-2xl mx-auto space-y-4">
+        <h3 class="text-2xl sm:text-3xl font-serif font-bold">Siap Tingkatkan Skill Kamu?</h3>
+        <p class="text-terracotta-50 text-sm sm:text-base leading-relaxed">
+          Segera daftar pelatihan yang direkomendasikan untuk jurusanmu. Gunakan kode kupon <span class="font-bold bg-white/20 px-2 py-0.5 rounded whitespace-nowrap text-white border border-white/30">Sukses!</span> saat checkout untuk penawaran spesial.
+        </p>
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="https://shop.yec.co.id/product-category/pelatihan-maganghub-kemnaker/" target="_blank" class="w-full sm:w-auto bg-amberwarm-500 hover:bg-amberwarm-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md flex items-center justify-center gap-2">
+            Lihat Semua Kelas
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Data Fallback (Default)
+    let magangData = [
+      {
+        no: 1, jurusan: "Pendidikan (Secara umum)", cluster: "HUMANIORA",
+        posisi: "Staff administrasi / Tutor / Content Creator / Data Entry",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel", "Data Analyst", "Membuat Konten untuk Social Media Specialist"],
+        alasan: "Membantu pengelolaan dokumen siswa, surat-menyurat, dan administrasi sekolah. Mendukung pembuatan konten edukasi dan komunikasi tertulis."
+      },
+      {
+        no: 2, jurusan: "Pendidikan Matematika", cluster: "HUMANIORA",
+        posisi: "Admin data pendidikan, staf evaluasi, data entry",
+        pelatihan: ["Data Analyst"],
+        alasan: "Membantu mengolah nilai, rekap hasil belajar, dan data evaluasi pendidikan."
+      },
+      {
+        no: 3, jurusan: "Teknologi Pendidikan", cluster: "HUMANIORA",
+        posisi: "Learning Support, admin LMS, instructional content support",
+        pelatihan: ["Microsoft Excel", "Digital Marketing"],
+        alasan: "Berguna untuk promosi program belajar dan memahami target audiens digital serta support teknis sistem belajar."
+      },
+      {
+        no: 4, jurusan: "Kesehatan Masyarakat", cluster: "KESEHATAN",
+        posisi: "Program Assistant kesehatan, staf data, admin klinik",
+        pelatihan: ["Microsoft Excel", "Data Analyst"],
+        alasan: "Relevan untuk pengolahan data program kesehatan, pemetaan epidemiologis dasar, dan pelaporan berkala."
+      },
+      {
+        no: 5, jurusan: "Keperawatan / Kebidanan", cluster: "KESEHATAN",
+        posisi: "Admin rumah sakit, patient service support, staf operasional",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Mendukung tugas administrasi non klinis, rekap kedatangan pasien, dan pengelolaan arsip rekam medis operasional."
+      },
+      {
+        no: 6, jurusan: "Rekam Medis dan Informasi Kesehatan", cluster: "KESEHATAN",
+        posisi: "Medical Records Admin, staf informasi kesehatan",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Mendukung pengolahan dan rekap data administratif rumah sakit. Tetap wajib mematuhi SOP kerahasiaan data pasien."
+      },
+      {
+        no: 7, jurusan: "Farmasi", cluster: "KESEHATAN",
+        posisi: "Admin apotek, inventory support, purchasing admin farmasi",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Berguna untuk rekap stok obat, pencatatan inventaris berkala, dan verifikasi faktur persediaan."
+      },
+      {
+        no: 8, jurusan: "Teknik (secara umum)", cluster: "STEM",
+        posisi: "Engineer (Sesuai jurusan)",
+        pelatihan: ["Data Analyst", "Microsoft Excel"],
+        alasan: "Paling dekat dengan kebutuhan pekerjaan pengelolaan, tabulasi parameter teknik, dan analisis data proyek."
+      },
+      {
+        no: 9, jurusan: "Biologi", cluster: "STEM",
+        posisi: "Research Assistant, lab data support, admin penelitian",
+        pelatihan: ["Data Analyst", "Microsoft Excel"],
+        alasan: "Berguna untuk memahami tata kelola data penelitian lapangan/lab dan analisis statistik dasar."
+      },
+      {
+        no: 10, jurusan: "Bioteknologi", cluster: "STEM",
+        posisi: "Research Support, quality documentation support",
+        pelatihan: ["Data Analyst", "Microsoft Excel"],
+        alasan: "Membantu pencatatan hasil pengujian laboratorium dan rekap data sampel (bukan pengganti pelatihan instrumen lab)."
+      },
+      {
+        no: 11, jurusan: "Kimia", cluster: "STEM",
+        posisi: "QC Admin, laboratory documentation support",
+        pelatihan: ["Data Analyst", "Microsoft Excel"],
+        alasan: "Relevan untuk administrasi mutu, log sampel, dan dokumentasi pendukung laboratorium kimia industri."
+      },
+      {
+        no: 12, jurusan: "Fisika", cluster: "STEM",
+        posisi: "Technical Admin, data support, research assistant",
+        pelatihan: ["Data Analyst", "Microsoft Excel"],
+        alasan: "Membantu pemahaman siklus data instrumen dan pekerjaan pemodelan berbasis data kuantitatif."
+      },
+      {
+        no: 13, jurusan: "Statistika", cluster: "STEM",
+        posisi: "Data Analyst Intern, Reporting Analyst",
+        pelatihan: ["Data Analyst"],
+        alasan: "Sangat linier dengan kebutuhan inti industri: pengolahan, validasi hipotesis, dan pemodelan analitik data."
+      },
+      {
+        no: 14, jurusan: "Ilmu Gizi", cluster: "KESEHATAN",
+        posisi: "Program Assistant gizi, staf data, admin program kesehatan",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Mendukung rekap data survei antropometri/gizi masyarakat dan perancangan laporan capaian program."
+      },
+      {
+        no: 15, jurusan: "Perbankan Syariah", cluster: "SOSIAL",
+        posisi: "Bank Operations Intern, admin pembiayaan, customer service",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Berguna untuk administrasi verifikasi berkas nasabah dan proses operasional perbankan harian."
+      },
+      {
+        no: 16, jurusan: "Ekonomi Syariah", cluster: "SOSIAL",
+        posisi: "Finance Admin, staf operasional lembaga keuangan syariah",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Membantu pengolahan data keuangan, pembukuan sederhana, dan pelaporan neraca dasar lembaga syariah."
+      },
+      {
+        no: 17, jurusan: "Sosiologi", cluster: "SOSIAL",
+        posisi: "Community Development, Social Research Assistant, Program Assistant",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Relevan untuk pengelolaan data survei kualitatif-kuantitatif, tabulasi responden, dan pelaporan program sosial."
+      },
+      {
+        no: 18, jurusan: "Antropologi", cluster: "SOSIAL",
+        posisi: "Research Assistant, Community Engagement",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Mendukung pengorganisasian catatan observasi lapangan, log interaksi komunitas, dan pengarsipan riset budaya."
+      },
+      {
+        no: 19, jurusan: "Ilmu Politik", cluster: "SOSIAL",
+        posisi: "Policy Research Assistant, admin program, staf organisasi",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Berguna untuk dokumentasi riset kebijakan, korespondensi resmi, dan manajemen operasional program advokasi."
+      },
+      {
+        no: 20, jurusan: "Ilmu Pemerintahan", cluster: "SOSIAL",
+        posisi: "Staf administrasi pemerintahan, program support",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Mendukung tata kelola administrasi birokrasi, pelacakan disposisi surat, dan rekapitulasi data layanan publik."
+      },
+      {
+        no: 21, jurusan: "Ilmu Perpustakaan", cluster: "HUMANIORA",
+        posisi: "Library Admin, dokumentasi, information management",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Relevan untuk pengarsipan bibliografi, katalogisasi metadata buku/jurnal, dan administrasi sirkulasi peminjaman."
+      },
+      {
+        no: 22, jurusan: "Kearsipan", cluster: "SOSIAL",
+        posisi: "Records Management Assistant, document control admin",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Mendukung penataan indeks arsip dinamis/statis, retensi dokumen fisik dan digital perusahaan."
+      },
+      {
+        no: 23, jurusan: "Geografi", cluster: "STEM",
+        posisi: "GIS Admin Support, environmental data support, research assistant",
+        pelatihan: ["Data Analyst"],
+        alasan: "Berguna untuk pemahaman pengelolaan basis data atribut spasial (tetap membutuhkan kombinasi software GIS terpisah)."
+      },
+      {
+        no: 24, jurusan: "Pertanian / Agribisnis", cluster: "KESEHATAN",
+        posisi: "Agriculture Admin, supply chain support, inventory admin",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Membantu rekap siklus panen, stok pupuk/benih, dan laporan operasional logistik agribisnis."
+      },
+      {
+        no: 25, jurusan: "Kehutanan", cluster: "KESEHATAN",
+        posisi: "Environmental Program Assistant, data support",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Relevan untuk inventarisasi tegakan pohon, rekap patroli hutan, dan dokumentasi program konservasi."
+      },
+      {
+        no: 26, jurusan: "Perikanan / Kelautan", cluster: "KESEHATAN",
+        posisi: "Fisheries Admin, research support, supply chain admin",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Mendukung pengelolaan data tonase hasil tangkap/budidaya, cold storage inventory, dan data riset oseanografi dasar."
+      },
+      {
+        no: 27, jurusan: "Peternakan", cluster: "KESEHATAN",
+        posisi: "Livestock Admin, production data support",
+        pelatihan: ["Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Berguna untuk rekap konversi pakan (FCR), recording bobot ternak harian, dan pencatatan kesehatan kandang."
+      },
+      {
+        no: 28, jurusan: "Teknik Lingkungan", cluster: "STEM",
+        posisi: "Environmental Data Support, HSE Admin",
+        pelatihan: ["Data Analyst", "Microsoft Excel"],
+        alasan: "Mendukung pemantauan baku mutu limbah dan matriks keselamatan (bukan pengganti sertifikasi K3/HSE teknis)."
+      },
+      {
+        no: 29, jurusan: "Teknik Pangan", cluster: "KESEHATAN",
+        posisi: "Quality Documentation Support, production admin",
+        pelatihan: ["Microsoft Excel", "Administrasi Perkantoran"],
+        alasan: "Membantu pencatatan batch produksi makanan, audit form HACCP, dan pengolahan data expired lot pabrik."
+      },
+      {
+        no: 30, jurusan: "Arsitektur", cluster: "STEM",
+        posisi: "Project Admin, Design Documentation Support",
+        pelatihan: ["Desain Grafis", "Microsoft Excel"],
+        alasan: "Mendukung presentasi visual konsep proyek, pitch deck klien, dan RAB dasar (bukan pengganti AutoCAD/Revit BIM)."
+      },
+      {
+        no: 31, jurusan: "Sastra / Bahasa Asing", cluster: "HUMANIORA",
+        posisi: "Content Writer, Translator Assistant, admin ekspor",
+        pelatihan: ["Kelas Bahasa Inggris Dasar Untuk Karyawan"],
+        alasan: "Menguatkan tata bahasa profesional, etiket email bisnis internasional, dan korespondensi ekspor-impor."
+      },
+      {
+        no: 32, jurusan: "Filsafat", cluster: "HUMANIORA",
+        posisi: "Research Assistant, content researcher, program admin",
+        pelatihan: ["Digital Marketing", "Membuat Konten untuk Social Media Specialist"],
+        alasan: "Menjembatani keahlian berpikir kritis dan dialektika menjadi copywriting riset konten serta komunikasi opini publik."
+      },
+      {
+        no: 33, jurusan: "Kriminologi", cluster: "SOSIAL",
+        posisi: "Research Assistant, program support, administrasi",
+        pelatihan: ["Data Analyst"],
+        alasan: "Mendukung pemahaman pola data kejahatan, evaluasi program resosialisasi, dan pelaporan statistik kriminologi."
+      },
+      {
+        no: 34, jurusan: "Pariwisata", cluster: "SOSIAL",
+        posisi: "Guest Service, Travel Admin, Tourism Marketing",
+        pelatihan: ["Pelayanan Prima"],
+        alasan: "Menguatkan pelayanan pelanggan dan komunikasi dengan pengunjung."
+      },
+      {
+        no: 35, jurusan: "Seni Musik / Seni Rupa", cluster: "HUMANIORA",
+        posisi: "Creative Admin, Content Creator, staf promosi",
+        pelatihan: ["Desain Grafis", "Social Media Specialist", "Digital Marketing"],
+        alasan: "Mendukung perancangan aset visual promosi, key visual kampanye medsos, dan tata kelola kalender konten audio-visual."
+      },
+      {
+        no: 36, jurusan: "Ilmu Komunikasi", cluster: "SOSIAL",
+        posisi: "Creative Admin, Content Creator, Content Writer, SEO",
+        pelatihan: ["Social Media Specialist", "Digital Marketing", "SEO untuk Tampil Di Halaman Pertama Google"],
+        alasan: "Relevan dalam meramu pesan merek, optimasi keterbacaan artikel di mesin pencari, dan interaksi audiens online."
+      },
+      {
+        no: 37, jurusan: "Psikologi", cluster: "SOSIAL",
+        posisi: "HRD, General Affair, Human Capital, Talent acquisition",
+        pelatihan: ["Staff HRD"],
+        alasan: "Mendukung operasional rekrutmen, administrasi jaminan sosial (BPJS), tata kelola absensi, dan kebijakan employee relations."
+      },
+      {
+        no: 38, jurusan: "Teknik Informatika", cluster: "STEM",
+        posisi: "Software developer, Data Scientist, Data Analyst, IT Support",
+        pelatihan: ["Data Analyst", "Kelas Bahasa Inggris untuk Programmer"],
+        alasan: "Membantu Mengolah data dalam jumlah besar & Menganalisis data harian perusahaan dan menyajikannya dalam bentuk laporan atau visualisasi."
+      },
+      {
+        no: 39, jurusan: "Akuntansi", cluster: "SOSIAL",
+        posisi: "Staf Accounting, Tax / Pajak, Finance, Administrasi",
+        pelatihan: ["Excel untuk Akuntansi"],
+        alasan: "Membantu dalam mengolah, menyusun, monitoring, dan analisis anggaran instansi atau perusahaan."
+      },
+      {
+        no: 40, jurusan: "Bimbingan Konseling", cluster: "HUMANIORA",
+        posisi: "HR, Trainer / Fasilitator, Talent management, Social Media",
+        pelatihan: ["Staff HRD", "Administrasi Perkantoran", "Microsoft Excel", "Membuat Konten untuk Social Media Specialist"],
+        alasan: "Membantu memahami proses rekrutmen, administrasi psikotes dasar, hingga mengurus pelatihan (training) karyawan."
+      },
+      {
+        no: 41, jurusan: "Perbandingan Mazhab", cluster: "SOSIAL",
+        posisi: "Staf legal, Syariah compliance, Staf SDM, Staf Administrasi",
+        pelatihan: ["Staff HRD", "Administrasi Perkantoran", "Microsoft Excel"],
+        alasan: "Membantu memeriksa dokumen kontrak, kepatuhan hukum, dan pemenuhan regulasi di perusahaan."
+      }
+    ];
+
+    // LINK GOOGLE SHEETS ANDA (Sudah saya masukkan link Anda)
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQSQrAxMVsHAS1zVtmuvlvHf5PYGbx6PqJoptGqtZM0T4HvO867YVqgIF5F0TxXwYLvO6Y-vWPWVnx/pub?gid=0&single=true&output=csv"; 
+
+    // KAMUS UTAMA LINK PELATIHAN (Bisa ditimpa oleh link dari Sheets)
+    const courseLinks = {
+      "Administrasi Perkantoran": "https://shop.yec.co.id/product/administrasi-perkantoran-untuk-persiapan-sertifikasi-bnsp/",
+      "Microsoft Excel": "https://shop.yec.co.id/product/dasar-microsoft-excel-untuk-administrasi-perkantoran-2/",
+      "Excel untuk Akuntansi": "https://shop.yec.co.id/product/microsoft-excel-untuk-laporan-keuangan-akuntansi/",
+      "Data Analyst": "https://shop.yec.co.id/product/data-analyst/",
+      "Membuat Konten untuk Social Media Specialist": "https://shop.yec.co.id/product/membuat-konten-untuk-social-media-specialist/",
+      "Social Media Specialist": "https://shop.yec.co.id/product/social-media-specialist/",
+      "Digital Marketing": "https://shop.yec.co.id/product/digital-marketing/",
+      "Desain Grafis": "https://shop.yec.co.id/product/desain-grafis/",
+      "Staff HRD": "https://shop.yec.co.id/product/staff-hrd-untuk-persiapan-sertifikasi-bnsp/",
+      "Kelas Bahasa Inggris Dasar Untuk Karyawan": "https://shop.yec.co.id/product/bahasa-inggris-karyawan/",
+      "Kelas Bahasa Inggris untuk Programmer": "https://shop.yec.co.id/product/bahasa-inggris-programmer/",
+      "Pelayanan Prima": "https://shop.yec.co.id/product/pelayanan-prima/",
+      "SEO untuk Tampil Di Halaman Pertama Google": "https://shop.yec.co.id/product/seo-google/"
+    };
+
+    // State Variables
+    let currentCluster = "ALL";
+    let searchQuery = "";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (SHEET_CSV_URL && SHEET_CSV_URL.trim() !== "") {
+        fetchDataFromSheets();
+      } else {
+        renderCards();
+        updateFilterBadgeTotal();
+      }
+    });
+
+    function fetchDataFromSheets() {
+      Papa.parse(SHEET_CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: 'greedy', // Lebih pintar mengabaikan baris kosong
+        transformHeader: function(header) {
+          return header.trim().toLowerCase(); // Ubah semua jadi huruf kecil
+        },
+        complete: function(results) {
+          const rows = results.data;
+          
+          // DETEKSI ERROR: Jika baris terbaca tapi kosong
+          if (!rows || rows.length === 0) {
+            document.getElementById('table-body').innerHTML = `
+              <tr><td colspan="6" class="py-8 text-center text-terracotta-600 font-bold bg-terracotta-50 border border-terracotta-200 rounded-lg">
+                ⚠️ Data dari Google Sheets terbaca KOSONG. Pastikan Anda sudah mengisi baris-barisnya.
+              </td></tr>
+            `;
+            return;
+          }
+
+          magangData = rows.map((row, index) => {
+            const getVal = (possibleNames) => {
+              for(let name of possibleNames) {
+                if(row[name] !== undefined) return row[name].trim();
+              }
+              return '';
+            };
+
+            const rawPelatihanStr = getVal(['pelatihan', 'rekomendasi pelatihan', 'nama pelatihan']);
+            let rawTrainings = rawPelatihanStr ? rawPelatihanStr.split(',').map(item => item.trim()).filter(i => i !== '') : [];
+            let parsedTrainings = [];
+
+            const link1 = getVal(['link kelas 1', 'link 1']);
+            const link2 = getVal(['link kelas 2', 'link 2']);
+            const link3 = getVal(['link kelas 3', 'link 3']);
+            const link4 = getVal(['link kelas 4', 'link 4']);
+            const linksArray = [link1, link2, link3, link4];
+
+            rawTrainings.forEach((trainName, i) => {
+              parsedTrainings.push(trainName);
+              if (linksArray[i] && linksArray[i] !== "") {
+                courseLinks[trainName] = linksArray[i]; 
+              }
+            });
+
+            return {
+              no: parseInt(getVal(['no', 'nomor'])) || (index + 1),
+              // Tambahan deteksi 'prodi', 'program studi' untuk Jurusan
+              jurusan: getVal(['jurusan', 'nama jurusan', 'prodi', 'program studi']),
+              cluster: getVal(['cluster', 'rumpun', 'kategori']) || 'Umum',
+              posisi: getVal(['posisi', 'posisi yang berpotensi dilamar', 'posisi potensial']),
+              pelatihan: parsedTrainings,
+              alasan: getVal(['alasan', 'alasan rekomendasi', 'deskripsi'])
+            };
+          }).filter(item => item.jurusan !== ''); // Buang baris yang jurusannya kosong
+          
+          // FITUR DETEKTIF: Jika setelah difilter datanya jadi 0 (artinya kolom jurusan tidak ketemu)
+          if (magangData.length === 0 && rows.length > 0) {
+             const readColumns = Object.keys(rows[0]).join(' | ');
+             document.getElementById('table-body').innerHTML = `
+                <tr><td colspan="6" class="py-8 px-4 text-center bg-terracotta-50 text-terracotta-700">
+                  <div class="font-bold text-lg mb-2">⚠️ Kolom "Jurusan" Tidak Ditemukan!</div>
+                  <p class="text-sm mb-4">Sistem berhasil terhubung ke Sheets Anda, tapi tidak bisa menemukan judul kolom untuk Jurusan.</p>
+                  <div class="bg-white p-3 rounded border border-terracotta-200 text-xs text-left max-w-xl mx-auto overflow-auto">
+                    <strong>Header/Judul Kolom yang sedang terbaca sistem saat ini:</strong><br><br>
+                    <span class="font-mono text-ink-900">${readColumns}</span>
+                  </div>
+                  <p class="text-xs mt-3">💡 <strong>Solusi:</strong> Pastikan di baris 1 Google Sheets Anda, ada sel yang persis bertuliskan <b>Jurusan</b>.</p>
+                </td></tr>
+             `;
+             return; // Hentikan render agar error terlihat
+          }
+
+          renderCards();
+          updateFilterBadgeTotal();
+        },
+        error: function(err) {
+          console.error("Gagal terhubung ke Google Sheets:", err);
+          document.getElementById('table-body').innerHTML = `
+            <tr><td colspan="6" class="py-8 text-center text-terracotta-600 font-bold bg-terracotta-50">
+              ⚠️ Gagal mengambil data CSV. Pastikan Link Publikasinya benar.
+            </td></tr>
+          `;
+        }
+      });
+    }
+
+    function updateFilterBadgeTotal() {
+      const allBtn = document.querySelector('button[onclick="filterByCluster(\'ALL\')"]');
+      if (allBtn) {
+        allBtn.innerText = `Semua Jurusan (${magangData.length})`;
+      }
+    }
+
+    function getClusterBadge(cluster) {
+      switch(cluster) {
+        case 'STEM':
+          return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100">STEM & Tekno</span>';
+        case 'KESEHATAN':
+          return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">Kesehatan & Agro</span>';
+        case 'HUMANIORA':
+          return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-100">Pend. & Seni</span>';
+        case 'SOSIAL':
+          return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100">Sosial, Bisnis & Gov</span>';
+        default:
+          return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-ink-100 text-ink-600">Umum</span>';
+      }
+    }
+
+    function renderCards() {
+      const tbody = document.getElementById('table-body');
+      const tableContainer = document.getElementById('table-container');
+      const emptyState = document.getElementById('empty-state');
+      const countEl = document.getElementById('visible-count');
+
+      const filtered = magangData.filter(item => {
+        const matchCluster = (currentCluster === 'ALL' || item.cluster === currentCluster);
+        
+        let matchSearch = true;
+        if (searchQuery.trim() !== '') {
+          const q = searchQuery.toLowerCase();
+          const major = item.jurusan.toLowerCase();
+          const pos = item.posisi.toLowerCase();
+          const trains = item.pelatihan.join(' ').toLowerCase();
+          const reason = item.alasan.toLowerCase();
+          matchSearch = major.includes(q) || pos.includes(q) || trains.includes(q) || reason.includes(q);
+        }
+
+        return matchCluster && matchSearch;
+      });
+
+      countEl.innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        if(tableContainer) tableContainer.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        return;
+      } else {
+        if(tableContainer) tableContainer.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+      }
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr class="hover:bg-[#FDFBF7] transition duration-200">
+          <td class="py-4 px-5 text-sm text-ink-400 font-mono text-center border-b border-[#ECE7DE]">${item.no}</td>
+          
+          <td class="py-4 px-5 align-top border-b border-[#ECE7DE]">
+            <p class="text-sm font-bold text-ink-900 mb-1.5 leading-snug">${item.jurusan}</p>
+            ${getClusterBadge(item.cluster)}
+          </td>
+          
+          <td class="py-4 px-5 align-top text-sm text-ink-700 font-medium leading-relaxed border-b border-[#ECE7DE]">
+            ${item.posisi}
+          </td>
+          
+          <td class="py-4 px-5 align-top border-b border-[#ECE7DE]">
+            <div class="flex flex-wrap gap-1.5">
+              ${item.pelatihan.map(train => `
+                <span class="inline-flex text-[11px] px-2.5 py-1 rounded-md font-semibold leading-tight ${
+                  train.includes('Data Analyst') ? 'bg-ink-900 text-white shadow-sm' :
+                  train.includes('Excel') ? 'bg-forest-50 text-forest-700 border border-forest-100' :
+                  'bg-ink-100 text-ink-700'
+                }">
+                  ${train}
+                </span>
+              `).join('')}
+            </div>
+          </td>
+          
+          <td class="py-4 px-5 align-top border-b border-[#ECE7DE]">
+            <p class="text-xs text-ink-600 leading-relaxed">${item.alasan}</p>
+          </td>
+
+          <td class="py-4 px-5 align-top border-b border-[#ECE7DE] bg-terracotta-50/20">
+            <div class="flex flex-col gap-2">
+              <button onclick="copyVoucher('Sukses!')" title="Salin Kode Kupon: Sukses!" class="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-terracotta-50 px-3 py-2 rounded-lg border border-terracotta-200 text-[11px] font-bold text-terracotta-700 transition shadow-sm active:scale-95 w-full">
+                🎟️ Kupon: Sukses!
+              </button>
+              
+              ${item.pelatihan.map(train => {
+                // Ambil link dari kamus, jika tidak ada pakai link kategori umum
+                let link = courseLinks[train] || "https://shop.yec.co.id/product-category/pelatihan-maganghub-kemnaker/";
+                
+                // Singkat teks di tombol agar tidak kepanjangan
+                let shortName = train;
+                if(train.includes("Membuat Konten")) shortName = "Socmed Specialist";
+                if(train.includes("Bahasa Inggris Dasar")) shortName = "B. Inggris Dasar";
+                if(train.includes("Bahasa Inggris untuk Programmer")) shortName = "B. Inggris IT";
+                if(train.includes("SEO")) shortName = "SEO Google";
+                if(train.includes("Administrasi")) shortName = "Admin Perkantoran";
+                if(train === "Excel untuk Akuntansi") shortName = "Excel Akuntansi";
+
+                return `
+                <a href="${link}" target="_blank" class="inline-flex items-center justify-center gap-1 bg-ink-900 hover:bg-ink-800 text-white px-3 py-2 rounded-lg text-[11px] font-bold transition shadow-sm active:scale-95 w-full text-center mt-1">
+                  Daftar ${shortName} ↗
+                </a>
+                `;
+              }).join('')}
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function filterByCluster(cluster) {
+      currentCluster = cluster;
+      
+      document.querySelectorAll('.cluster-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-ink-900', 'text-white');
+        btn.classList.add('bg-white', 'text-ink-600');
+      });
+
+      event.currentTarget.classList.add('active', 'bg-ink-900', 'text-white');
+      event.currentTarget.classList.remove('bg-white', 'text-ink-600');
+
+      renderCards();
+    }
+
+    function handleSearch() {
+      searchQuery = document.getElementById('search-input').value;
+      renderCards();
+    }
+
+    function resetFilters() {
+      currentCluster = 'ALL';
+      searchQuery = '';
+      
+      document.getElementById('search-input').value = '';
+
+      document.querySelectorAll('.cluster-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-ink-900', 'text-white');
+        btn.classList.add('bg-white', 'text-ink-600');
+      });
+      const firstBtn = document.querySelector('#cluster-pills button');
+      if (firstBtn) {
+        firstBtn.classList.add('active', 'bg-ink-900', 'text-white');
+        firstBtn.classList.remove('bg-white', 'text-ink-600');
+      }
+
+      renderCards();
+    }
+
+    function copyVoucher(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        alert(`Kode kupon "${text}" berhasil disalin! Masukkan saat checkout.`);
+      } catch (err) {
+        console.error('Failed to copy', err);
+      }
+      document.body.removeChild(textarea);
+    }
+  </script>
+</body>
+</html>
