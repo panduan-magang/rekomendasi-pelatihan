@@ -712,12 +712,12 @@
         mobileView.innerHTML = filtered.map(item => `
           <div class="p-5 hover:bg-[#FDFBF7] transition duration-200 border-b border-[#ECE7DE] last:border-0">
             
-            <!-- Judul Jurusan dan Cluster -->
+            <!-- Judul Jurusan dan Kategori -->
             <div class="flex items-start gap-3 mb-4">
               <span class="text-lg font-black text-ink-300 mt-1">#${item.no}</span>
               <div>
                 <h3 class="text-lg font-bold text-ink-900 leading-snug mb-1">${item.jurusan}</h3>
-                ${getClusterBadge(item.cluster)}
+                <span class="inline-flex text-[11px] font-semibold px-2 py-0.5 rounded bg-ink-100 text-ink-700 border border-ink-200">${item.kategori || item.cluster || '-'}</span>
               </div>
             </div>
 
