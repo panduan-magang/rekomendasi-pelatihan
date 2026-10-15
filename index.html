@@ -128,21 +128,10 @@
 
       <!-- Quick Filters / Pills -->
       <div class="flex flex-wrap justify-center gap-2 pt-2" id="cluster-pills">
-        <button onclick="filterByCluster('ALL')" class="cluster-btn active px-4 py-2 text-xs font-semibold rounded-full bg-ink-900 text-white transition shadow-sm border border-transparent">
-          Semua Jurusan
-        </button>
-        <button onclick="filterByCluster('STEM')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
-          🔬 Sains & Teknik
-        </button>
-        <button onclick="filterByCluster('KESEHATAN')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
-          🩺 Kesehatan & Agro
-        </button>
-        <button onclick="filterByCluster('HUMANIORA')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
-          📚 Pend. & Seni
-        </button>
-        <button onclick="filterByCluster('SOSIAL')" class="cluster-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
-          🏛️ Sosial, Bisnis & Gov
-        </button>
+        <!-- Filter Kategori akan dirender secara dinamis di sini oleh JavaScript -->
+        <div class="inline-flex items-center gap-2 text-ink-400 text-sm animate-pulse">
+          Memuat kategori...
+        </div>
       </div>
     </section>
 
@@ -158,20 +147,22 @@
 
       <div id="table-container" class="card-craft rounded-2xl overflow-hidden bg-white mt-4">
         <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full min-w-[1050px] text-left border-collapse">
+          <table class="w-full min-w-[1200px] text-left border-collapse">
             <thead class="bg-[#F8F7F4] border-b border-[#ECE7DE]">
               <tr>
-                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-12 text-center">No</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-8 text-center">No</th>
                 <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Jurusan</th>
-                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[20%]">Posisi Potensial</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[12%]">Kategori</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[12%]">Cluster</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Posisi Potensial</th>
                 <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Pelatihan</th>
-                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[20%]">Alasan</th>
-                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%] text-center bg-terracotta-50/50">Link Pelatihan</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[18%]">Alasan</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[13%] text-center bg-terracotta-50/50">Link Pelatihan</th>
               </tr>
             </thead>
             <tbody id="table-body" class="divide-y divide-[#ECE7DE]">
               <tr>
-                <td colspan="6" class="py-12 text-center">
+                <td colspan="8" class="py-12 text-center">
                   <div class="inline-flex items-center justify-center gap-2 text-ink-600 font-medium animate-pulse">
                     <svg class="w-5 h-5 animate-spin text-terracotta-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     Memuat data jurusan...
@@ -482,15 +473,15 @@
     };
 
     // State Variables
-    let currentCluster = "ALL";
+    let currentCategory = "ALL"; // Menggunakan kategori sebagai basis filter utama
     let searchQuery = "";
 
     document.addEventListener("DOMContentLoaded", () => {
       if (SHEET_CSV_URL && SHEET_CSV_URL.trim() !== "") {
         fetchDataFromSheets();
       } else {
+        renderFilterPills();
         renderCards();
-        updateFilterBadgeTotal();
       }
     });
 
@@ -508,7 +499,7 @@
           // DETEKSI ERROR: Jika baris terbaca tapi kosong
           if (!rows || rows.length === 0) {
             document.getElementById('table-body').innerHTML = `
-              <tr><td colspan="6" class="py-8 text-center text-terracotta-600 font-bold bg-terracotta-50 border border-terracotta-200 rounded-lg">
+              <tr><td colspan="8" class="py-8 text-center text-terracotta-600 font-bold bg-terracotta-50 border border-terracotta-200 rounded-lg">
                 ⚠️ Data dari Google Sheets terbaca KOSONG. Pastikan Anda sudah mengisi baris-barisnya.
               </td></tr>
             `;
@@ -542,9 +533,9 @@
 
             return {
               no: parseInt(getVal(['no', 'nomor'])) || (index + 1),
-              // Tambahan deteksi 'prodi', 'program studi' untuk Jurusan
               jurusan: getVal(['jurusan', 'nama jurusan', 'prodi', 'program studi']),
-              cluster: getVal(['cluster', 'rumpun', 'kategori']) || 'Umum',
+              kategori: getVal(['kategori']), // <--- Membaca kolom 'Kategori' dari Sheets
+              cluster: getVal(['cluster', 'rumpun']) || 'Umum', // <--- Membaca kolom 'Cluster' dari Sheets
               posisi: getVal(['posisi', 'posisi yang berpotensi dilamar', 'posisi potensial']),
               pelatihan: parsedTrainings,
               alasan: getVal(['alasan', 'alasan rekomendasi', 'deskripsi'])
@@ -555,7 +546,7 @@
           if (magangData.length === 0 && rows.length > 0) {
              const readColumns = Object.keys(rows[0]).join(' | ');
              document.getElementById('table-body').innerHTML = `
-                <tr><td colspan="6" class="py-8 px-4 text-center bg-terracotta-50 text-terracotta-700">
+                <tr><td colspan="8" class="py-8 px-4 text-center bg-terracotta-50 text-terracotta-700">
                   <div class="font-bold text-lg mb-2">⚠️ Kolom "Jurusan" Tidak Ditemukan!</div>
                   <p class="text-sm mb-4">Sistem berhasil terhubung ke Sheets Anda, tapi tidak bisa menemukan judul kolom untuk Jurusan.</p>
                   <div class="bg-white p-3 rounded border border-terracotta-200 text-xs text-left max-w-xl mx-auto overflow-auto">
@@ -568,13 +559,13 @@
              return; // Hentikan render agar error terlihat
           }
 
+          renderFilterPills();
           renderCards();
-          updateFilterBadgeTotal();
         },
         error: function(err) {
           console.error("Gagal terhubung ke Google Sheets:", err);
           document.getElementById('table-body').innerHTML = `
-            <tr><td colspan="6" class="py-8 text-center text-terracotta-600 font-bold bg-terracotta-50">
+            <tr><td colspan="8" class="py-8 text-center text-terracotta-600 font-bold bg-terracotta-50">
               ⚠️ Gagal mengambil data CSV. Pastikan Link Publikasinya benar.
             </td></tr>
           `;
@@ -582,15 +573,37 @@
       });
     }
 
-    function updateFilterBadgeTotal() {
-      const allBtn = document.querySelector('button[onclick="filterByCluster(\'ALL\')"]');
-      if (allBtn) {
-        allBtn.innerText = `Semua Jurusan (${magangData.length})`;
-      }
+    function renderFilterPills() {
+      const container = document.getElementById('cluster-pills');
+      if (!container) return;
+
+      // Ekstrak semua kategori yang unik dari data kolom "Kategori"
+      const uniqueCategories = [...new Set(magangData.map(item => item.kategori))].filter(c => c && c.trim() !== '');
+
+      // Mulai dengan tombol 'Semua'
+      let html = `
+        <button onclick="filterByCategory('ALL')" class="category-btn active px-4 py-2 text-xs font-semibold rounded-full bg-ink-900 text-white transition shadow-sm border border-transparent">
+          Semua Jurusan (${magangData.length})
+        </button>
+      `;
+
+      // Buat tombol untuk setiap Kategori yang terdeteksi
+      uniqueCategories.forEach(category => {
+        html += `
+          <button onclick="filterByCategory('${category}')" class="category-btn px-4 py-2 text-xs font-semibold rounded-full bg-white text-ink-600 hover:border-ink-300 transition border editorial-border shadow-sm">
+            ${category}
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
     }
 
     function getClusterBadge(cluster) {
-      switch(cluster) {
+      if (!cluster) return '';
+      const upperCluster = cluster.toUpperCase();
+      
+      switch(upperCluster) {
         case 'STEM':
           return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100">STEM & Tekno</span>';
         case 'KESEHATAN':
@@ -600,7 +613,8 @@
         case 'SOSIAL':
           return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100">Sosial, Bisnis & Gov</span>';
         default:
-          return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-ink-100 text-ink-600">Umum</span>';
+          // Jika ada kategori baru, otomatis dibuatkan badge dengan warna netral
+          return `<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-ink-100 text-ink-700 border border-ink-200">${cluster}</span>`;
       }
     }
 
@@ -611,19 +625,20 @@
       const countEl = document.getElementById('visible-count');
 
       const filtered = magangData.filter(item => {
-        const matchCluster = (currentCluster === 'ALL' || item.cluster === currentCluster);
+        const matchCategory = (currentCategory === 'ALL' || item.kategori === currentCategory);
         
         let matchSearch = true;
         if (searchQuery.trim() !== '') {
           const q = searchQuery.toLowerCase();
           const major = item.jurusan.toLowerCase();
+          const kat = (item.kategori || "").toLowerCase();
           const pos = item.posisi.toLowerCase();
           const trains = item.pelatihan.join(' ').toLowerCase();
           const reason = item.alasan.toLowerCase();
-          matchSearch = major.includes(q) || pos.includes(q) || trains.includes(q) || reason.includes(q);
+          matchSearch = major.includes(q) || kat.includes(q) || pos.includes(q) || trains.includes(q) || reason.includes(q);
         }
 
-        return matchCluster && matchSearch;
+        return matchCategory && matchSearch;
       });
 
       countEl.innerText = filtered.length;
@@ -642,7 +657,14 @@
           <td class="py-4 px-5 text-sm text-ink-400 font-mono text-center border-b border-[#ECE7DE]">${item.no}</td>
           
           <td class="py-4 px-5 align-top border-b border-[#ECE7DE]">
-            <p class="text-sm font-bold text-ink-900 mb-1.5 leading-snug">${item.jurusan}</p>
+            <p class="text-sm font-bold text-ink-900 leading-snug">${item.jurusan}</p>
+          </td>
+
+          <td class="py-4 px-5 align-top border-b border-[#ECE7DE]">
+            <p class="text-sm font-semibold text-ink-700">${item.kategori || '-'}</p>
+          </td>
+
+          <td class="py-4 px-5 align-top border-b border-[#ECE7DE]">
             ${getClusterBadge(item.cluster)}
           </td>
           
@@ -699,10 +721,10 @@
       `).join('');
     }
 
-    function filterByCluster(cluster) {
-      currentCluster = cluster;
+    function filterByCategory(category) {
+      currentCategory = category;
       
-      document.querySelectorAll('.cluster-btn').forEach(btn => {
+      document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.remove('active', 'bg-ink-900', 'text-white');
         btn.classList.add('bg-white', 'text-ink-600');
       });
@@ -719,12 +741,12 @@
     }
 
     function resetFilters() {
-      currentCluster = 'ALL';
+      currentCategory = 'ALL';
       searchQuery = '';
       
       document.getElementById('search-input').value = '';
 
-      document.querySelectorAll('.cluster-btn').forEach(btn => {
+      document.querySelectorAll('.category-btn').forEach(btn => {
         btn.classList.remove('active', 'bg-ink-900', 'text-white');
         btn.classList.add('bg-white', 'text-ink-600');
       });
@@ -737,6 +759,19 @@
       renderCards();
     }
 
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-5 right-5 bg-ink-900 text-white px-5 py-3 rounded-xl shadow-lg z-50 transition-all duration-300 font-sans text-sm flex items-center gap-2 transform translate-y-0 opacity-100';
+      toast.innerHTML = `<svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> ${message}`;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => document.body.removeChild(toast), 300);
+      }, 3000);
+    }
+
     function copyVoucher(text) {
       const textarea = document.createElement('textarea');
       textarea.value = text;
@@ -744,7 +779,7 @@
       textarea.select();
       try {
         document.execCommand('copy');
-        alert(`Kode kupon "${text}" berhasil disalin! Masukkan saat checkout.`);
+        showToast(`Kode kupon "${text}" berhasil disalin!`);
       } catch (err) {
         console.error('Failed to copy', err);
       }
