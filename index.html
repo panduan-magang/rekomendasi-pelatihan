@@ -90,7 +90,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <!-- Ganti tautan di dalam atribut src="" dengan link URL logo kantor Anda -->
-        <img src="Logo YEC Square Orange.png" alt="Logo Kantor" class="w-10 h-10 object-contain rounded-xl shadow-sm bg-white border border-gray-100">
+        <img src="Logo YEC Square Orange.png" alt="Logo Kantor" class="w-10 h-10 object-contain rounded-xl shadow-sm bg-white border border-gray-100" onerror="this.src='https://placehold.co/100x100?text=Logo'">
         <div>
           <h1 class="text-base sm:text-lg font-bold text-ink-900 tracking-tight">Katalog Maganghub</h1>
         </div>
@@ -145,14 +145,27 @@
       </div>
 
       <div id="table-container" class="card-craft rounded-2xl overflow-hidden bg-white mt-4">
+        
+        <!-- Mobile View (Card Layout) -->
+        <div id="mobile-view" class="md:hidden divide-y divide-[#ECE7DE]">
+          <div class="py-12 text-center">
+            <div class="inline-flex items-center justify-center gap-2 text-ink-600 font-medium animate-pulse">
+              <svg class="w-5 h-5 animate-spin text-terracotta-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              Memuat data jurusan...
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop View (Table Layout) -->
+         <div id="table-container" class="card-craft rounded-2xl overflow-hidden bg-white mt-4">
         <div class="overflow-x-auto custom-scrollbar">
           <table class="w-full min-w-[1200px] text-left border-collapse">
             <thead class="bg-[#F8F7F4] border-b border-[#ECE7DE]">
               <tr>
                 <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-8 text-center">No</th>
-                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Jurusan</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[12%]">Jurusan</th>
                 <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[12%]">Kategori</th>
-                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[12%]">Cluster</th>
+                <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[13%]">Cluster</th>
                 <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Posisi Potensial</th>
                 <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[15%]">Pelatihan</th>
                 <th class="py-4 px-5 text-[11px] font-bold text-ink-900 uppercase tracking-wider w-[18%]">Alasan</th>
@@ -502,6 +515,7 @@
                 ⚠️ Data dari Google Sheets terbaca KOSONG. Pastikan Anda sudah mengisi baris-barisnya.
               </td></tr>
             `;
+            document.getElementById('mobile-view').innerHTML = `<div class="p-8 text-center text-terracotta-600 font-bold bg-terracotta-50 border border-terracotta-200 m-4 rounded-lg">⚠️ Data KOSONG.</div>`;
             return;
           }
 
@@ -555,6 +569,7 @@
                   <p class="text-xs mt-3">💡 <strong>Solusi:</strong> Pastikan di baris 1 Google Sheets Anda, ada sel yang persis bertuliskan <b>Jurusan</b>.</p>
                 </td></tr>
              `;
+             document.getElementById('mobile-view').innerHTML = `<div class="p-6 text-center bg-terracotta-50 text-terracotta-700">⚠️ Kolom "Jurusan" tidak ditemukan. Cek dari layar Desktop untuk detail.</div>`;
              return; // Hentikan render agar error terlihat
           }
 
@@ -568,6 +583,7 @@
               ⚠️ Gagal mengambil data CSV. Pastikan Link Publikasinya benar.
             </td></tr>
           `;
+          document.getElementById('mobile-view').innerHTML = `<div class="p-6 text-center text-terracotta-600 font-bold bg-terracotta-50">⚠️ Gagal mengambil data CSV.</div>`;
         }
       });
     }
@@ -612,13 +628,13 @@
         case 'SOSIAL':
           return '<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100">Sosial, Bisnis & Gov</span>';
         default:
-          // Jika ada kategori baru, otomatis dibuatkan badge dengan warna netral
           return `<span class="text-[11px] font-semibold px-2 py-0.5 rounded bg-ink-100 text-ink-700 border border-ink-200">${cluster}</span>`;
       }
     }
 
     function renderCards() {
       const tbody = document.getElementById('table-body');
+      const mobileView = document.getElementById('mobile-view');
       const tableContainer = document.getElementById('table-container');
       const emptyState = document.getElementById('empty-state');
       const countEl = document.getElementById('visible-count');
@@ -690,16 +706,13 @@
           </td>
 
           <td class="py-4 px-5 align-top border-b border-[#ECE7DE] bg-terracotta-50/20">
-            <div class="flex flex-col gap-2">
-              <button onclick="copyVoucher('Sukses!')" title="Salin Kode Kupon: Sukses!" class="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-terracotta-50 px-3 py-2 rounded-lg border border-terracotta-200 text-[11px] font-bold text-terracotta-700 transition shadow-sm active:scale-95 w-full">
+            <div class="flex flex-wrap gap-2 justify-center">
+              <button onclick="copyVoucher('Sukses!')" title="Salin Kode Kupon: Sukses!" class="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1.5 bg-white hover:bg-terracotta-50 px-3 py-2 rounded-lg border border-terracotta-200 text-[11px] font-bold text-terracotta-700 transition shadow-sm active:scale-95">
                 🎟️ Kupon: Sukses!
               </button>
               
               ${item.pelatihan.map(train => {
-                // Ambil link dari kamus, jika tidak ada pakai link kategori umum
                 let link = courseLinks[train] || "https://shop.yec.co.id/product-category/pelatihan-maganghub-kemnaker/";
-                
-                // Singkat teks di tombol agar tidak kepanjangan
                 let shortName = train;
                 if(train.includes("Membuat Konten")) shortName = "Socmed Specialist";
                 if(train.includes("Bahasa Inggris Dasar")) shortName = "B. Inggris Dasar";
@@ -709,7 +722,7 @@
                 if(train === "Excel untuk Akuntansi") shortName = "Excel Akuntansi";
 
                 return `
-                <a href="${link}" target="_blank" class="inline-flex items-center justify-center gap-1 bg-ink-900 hover:bg-ink-800 text-white px-3 py-2 rounded-lg text-[11px] font-bold transition shadow-sm active:scale-95 w-full text-center mt-1">
+                <a href="${link}" target="_blank" class="flex-1 min-w-[120px] inline-flex items-center justify-center gap-1 bg-ink-900 hover:bg-ink-800 text-white px-3 py-2 rounded-lg text-[11px] font-bold transition shadow-sm active:scale-95 text-center">
                   Daftar ${shortName} ↗
                 </a>
                 `;
@@ -718,6 +731,69 @@
           </td>
         </tr>
       `).join('');
+
+      if(mobileView) {
+        mobileView.innerHTML = filtered.map(item => `
+          <div class="p-5 space-y-4 hover:bg-[#FDFBF7] transition duration-200 border-b border-[#ECE7DE] last:border-0">
+            <div class="flex flex-col gap-1.5">
+              <h3 class="text-lg font-bold text-ink-900 leading-snug block">
+                <span class="text-ink-400 mr-1">#${item.no}.</span>${item.jurusan}
+              </h3>
+              <div class="flex items-center gap-2">
+                ${getClusterBadge(item.cluster)}
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-3 bg-[#F8F7F4] p-3.5 rounded-xl border editorial-border">
+              <div>
+                <span class="text-[10px] font-bold text-ink-400 uppercase tracking-wider block mb-0.5">Posisi Potensial</span>
+                <p class="text-[13px] text-ink-800 font-medium leading-relaxed">${item.posisi}</p>
+              </div>
+              
+              <div>
+                <span class="text-[10px] font-bold text-ink-400 uppercase tracking-wider block mb-1.5">Rekomendasi Pelatihan</span>
+                <div class="flex flex-wrap gap-1.5">
+                  ${item.pelatihan.map(train => `
+                    <span class="inline-flex text-[10px] px-2 py-1 rounded border border-ink-200 bg-white text-ink-700 font-semibold leading-tight">
+                      ${train}
+                    </span>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div>
+                <span class="text-[10px] font-bold text-ink-400 uppercase tracking-wider block mb-0.5">Alasan</span>
+                <p class="text-[12px] text-ink-600 leading-relaxed">${item.alasan}</p>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <span class="text-[10px] font-bold text-terracotta-600 uppercase tracking-wider block mb-2 text-center">Aksi & Link Pelatihan</span>
+              <div class="grid grid-cols-2 gap-2">
+                 <button onclick="copyVoucher('Sukses!')" title="Salin Kode Kupon: Sukses!" class="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1.5 bg-terracotta-50 hover:bg-terracotta-100 px-3 py-2.5 rounded-lg border border-terracotta-200 text-xs font-bold text-terracotta-700 transition shadow-sm active:scale-95">
+                   🎟️ Kupon: Sukses!
+                 </button>
+                 ${item.pelatihan.map(train => {
+                   let link = courseLinks[train] || "https://shop.yec.co.id/product-category/pelatihan-maganghub-kemnaker/";
+                   let shortName = train;
+                   if(train.includes("Membuat Konten")) shortName = "Socmed Specialist";
+                   if(train.includes("Bahasa Inggris Dasar")) shortName = "B. Inggris Dasar";
+                   if(train.includes("Bahasa Inggris untuk Programmer")) shortName = "B. Inggris IT";
+                   if(train.includes("SEO")) shortName = "SEO Google";
+                   if(train.includes("Administrasi")) shortName = "Admin Perkantoran";
+                   if(train === "Excel untuk Akuntansi") shortName = "Excel Akuntansi";
+
+                   return `
+                   <a href="${link}" target="_blank" class="col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1 bg-ink-900 hover:bg-ink-800 text-white px-3 py-2.5 rounded-lg text-xs font-bold transition shadow-sm active:scale-95 text-center">
+                     Daftar ${shortName} ↗
+                   </a>
+                   `;
+                 }).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
     }
 
     function filterByCategory(category) {
